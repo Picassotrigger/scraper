@@ -53,13 +53,22 @@ app.use(express.static('app/public'));
 
 
 // -----------------   Index route   -----------------
-app.get('/', function(req, res) {
+// app.get('/', function(req, res) {
+//   res.render('index');
+// });
+
+app.get("/", function(req, res) {
+  // Clear out the database
+  Article.remove({}, function (err) {
+    if (err) return handleError(err);
+  // removed!
+  });
   res.render('index');
 });
 
 
 //------------------------   Database configuration with mongoose   ------------------------
-mongoose.connect("mongodb://localhost/scraper");
+mongoose.connect("mongodb://heroku_3csk9jv4:lmnnaditr8d9i68d928c5r88in@ds149382.mlab.com:49382/heroku_3csk9jv4");
 var db = mongoose.connection;
 
 // mongoose.connect("mongodb://localhost/scraper");
@@ -108,13 +117,20 @@ app.get("/scrape", function(req, res) {
           console.log(doc);
         }
       });
-
     });
+    res.render('scrape');
   });
-  // Tell the browser that we finished scraping the text
-  // res.send("Scrape Complete");
-  res.render('scrape');
 });
+
+
+// app.get("/clear", function(req, res) {
+//   // Clear out the database
+//   Article.remove({}, function (err) {
+//     if (err) return handleError(err);
+//   // removed!
+//   });
+//   res.render('index');
+// });
 
 
 //------------------------   Present all articles   ------------------------
